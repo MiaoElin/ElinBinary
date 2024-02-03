@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ElinBinary {
     public static class BinaryWriter {
         public static void WriteInt() {
-
+ 
         }
     }
 }
