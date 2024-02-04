@@ -46,9 +46,15 @@ namespace ElinBinary.sample {
             // ushort c = BinaryReader.ReadUshort(buffer, ref index2);
             // Debug.Log(c);
             // Debug.Log(index);
-            string a = "abc";
-            BinaryWriter.WriteString(buffer, a, ref index);
-            string b = BinaryReader.ReadString(buffer, ref index1);
+
+            // string a = "abc";
+            // BinaryWriter.WriteString(buffer, a, ref index);
+            // string b = BinaryReader.ReadString(buffer, ref index1);
+            // Debug.Log(b);
+
+            float a = 12.5f;
+            BinaryWriter.WriteFloat(buffer, a, ref index);
+            float b = BinaryReader.ReadFloat(buffer, ref index1);
             Debug.Log(b);
         }
 

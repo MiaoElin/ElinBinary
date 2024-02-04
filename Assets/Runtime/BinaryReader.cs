@@ -22,6 +22,18 @@ namespace ElinBinary {
             }
             return values;
         }
+        public static byte ReadByte(byte[] buffer, ref int index) {
+            byte value = (byte)buffer[index];
+            return value;
+        }
+        public static byte[] ReadByteArray(byte[] buffer, ref int index) {
+            ushort length = ReadUshort(buffer, ref index);
+            byte[] values = new byte[length];
+            for (int i = 0; i < length; i++) {
+                values[i] = ReadByte(buffer, ref index);
+            }
+            return values;
+        }
         public static bool ReadBool(byte[] buffer, ref int index) {
             byte value = buffer[index];
             if (value == 0) {

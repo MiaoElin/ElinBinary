@@ -168,14 +168,12 @@ namespace ElinBinary {
             }
         }
         public static void WriteFloat(byte[] buffer, float value, ref int index) {
-            buffer[index] = (byte)((byte)value >> 0);
-            index++;
-            buffer[index] = (byte)((byte)value >> 8);
-            index++;
-            buffer[index] = (byte)((byte)value >> 16);
-            index++;
-            buffer[index] = (byte)((byte)value >> 24);
-            index++;
+            byte[] values = new byte[4];
+            values = BitConverter.GetBytes(value);
+            // WriteByteArray(buffer, values, ref index);
+            for (int i = 0; i < 4; i++) {
+                WriteByte(buffer, values[i], ref index);
+            }
         }
     }
 }
