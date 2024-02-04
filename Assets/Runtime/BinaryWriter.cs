@@ -151,11 +151,21 @@ namespace ElinBinary {
             WriteUint(buffer, (uint)value >> 32, ref index);
         }
         public static void WriteUlongArray(byte[] buffer, ulong[] values, ref int index) {
-            WriteUshort(buffer,(ushort)values.Length,ref index);
-            for(int i=0;i<values.Length;i++){
-                WriteUlong(buffer,values[i],ref index);
+            WriteUshort(buffer, (ushort)values.Length, ref index);
+            for (int i = 0; i < values.Length; i++) {
+                WriteUlong(buffer, values[i], ref index);
             }
         }
-        
+        public static void WriteString(byte[] buffer, string value, ref int index) {
+            char[] values = value.ToCharArray();
+            WriteCharArray(buffer, values, ref index);
+        }
+        public static void WriteStringArray(byte[] buffer, string[] values, ref int index) {
+            WriteUshort(buffer, (ushort)values.Length, ref index);
+            for (int i = 0; i < values.Length; i++) {
+                WriteString(buffer, values[i], ref index);
+            }
+        }
+
     }
 }

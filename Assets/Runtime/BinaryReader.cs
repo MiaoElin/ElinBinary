@@ -136,6 +136,9 @@ namespace ElinBinary {
             }
             return values;
         }
-        
+        public static string ReadString(byte[] buffer, ref int index) {
+            char[] values = ReadCharArray(buffer, ref index);
+            return values.ToString();
+        }
     }
 }
