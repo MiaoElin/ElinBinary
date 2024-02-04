@@ -174,6 +174,8 @@ namespace ElinBinary {
             for (int i = 0; i < 4; i++) {
                 WriteByte(buffer, values[i], ref index);
             }
+            
         }
+        
     }
 }
