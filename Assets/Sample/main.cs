@@ -8,6 +8,7 @@ namespace ElinBinary.sample {
         void Start() {
             // int a = -1;
             int index = 2;
+            int index1 = 2;
             byte[] buffer = new byte[1024];
 
             // ElinBinary.BinaryWriter.WriteInt(buffer, a, ref index);
@@ -31,13 +32,13 @@ namespace ElinBinary.sample {
             // Debug.Log(buf[7]);
             // Debug.Log(buf[8]);
 
-            char aa = 'A';
-            BinaryWriter.WriteChar(buffer, aa, ref index);
-            string aaa = Convert.ToString(buffer[2], 2);//讲正整数转为2进制字符串；
-            Debug.Log(aaa);
-            int index2 = 2;
-            char bb = BinaryReader.ReadChar(buffer, ref index2);
-            Debug.Log(bb);
+            // char aa = 'A';
+            // BinaryWriter.WriteChar(buffer, aa, ref index);
+            // string aaa = Convert.ToString(buffer[2], 2);//讲正整数转为2进制字符串；
+            // Debug.Log(aaa);
+            // int index2 = 2;
+            // char bb = BinaryReader.ReadChar(buffer, ref index2);
+            // Debug.Log(bb);
 
             // ushort b = 2;
             // BinaryWriter.WriteUshort(buffer, b, ref index);
@@ -45,6 +46,10 @@ namespace ElinBinary.sample {
             // ushort c = BinaryReader.ReadUshort(buffer, ref index2);
             // Debug.Log(c);
             // Debug.Log(index);
+            string a = "abc";
+            BinaryWriter.WriteString(buffer, a, ref index);
+            string b = BinaryReader.ReadString(buffer, ref index1);
+            Debug.Log(b);
         }
 
         // Update is called once per frame

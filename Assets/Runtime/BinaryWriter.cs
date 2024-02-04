@@ -11,9 +11,9 @@ namespace ElinBinary {
         // short short[] ushort ushort[]
         // int int[] uint uint[]
         // long long[] ulong ulong[]
+        // string string[]
         // float float[] double double[]
         // decimal decimal[]
-        // string string[]
         public static void WriteSbyte(byte[] buffer, sbyte value, ref int index) {
             buffer[index] = (byte)value;
             index++;
@@ -159,6 +159,7 @@ namespace ElinBinary {
         public static void WriteString(byte[] buffer, string value, ref int index) {
             char[] values = value.ToCharArray();
             WriteCharArray(buffer, values, ref index);
+
         }
         public static void WriteStringArray(byte[] buffer, string[] values, ref int index) {
             WriteUshort(buffer, (ushort)values.Length, ref index);
@@ -166,6 +167,15 @@ namespace ElinBinary {
                 WriteString(buffer, values[i], ref index);
             }
         }
-
+        public static void WriteFloat(byte[] buffer, float value, ref int index) {
+            buffer[index] = (byte)((byte)value >> 0);
+            index++;
+            buffer[index] = (byte)((byte)value >> 8);
+            index++;
+            buffer[index] = (byte)((byte)value >> 16);
+            index++;
+            buffer[index] = (byte)((byte)value >> 24);
+            index++;
+        }
     }
 }

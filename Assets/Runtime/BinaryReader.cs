@@ -138,7 +138,28 @@ namespace ElinBinary {
         }
         public static string ReadString(byte[] buffer, ref int index) {
             char[] values = ReadCharArray(buffer, ref index);
-            return values.ToString();
+            string value = "";
+            for (int i = 0; i < values.Length; i++) {
+                value = value + values[i];
+            }
+            return value;
+        }
+        public static string[] ReadStringArray(byte[] buffer, ref int index) {
+            ushort length = ReadUshort(buffer, ref index);
+            string[] values = new string[length];
+            for (int i = 0; i < length; i++) {
+                values[i] = ReadString(buffer, ref index);
+            }
+            return values;
+        }
+        public static float ReadFloat(byte[] buffer, ref int index) {
+            byte[] values = new byte[4];
+            for (int i = 0; i < 4; i++) {
+                values[i] = buffer[index];
+                index++;
+            }
+            float value = BitConverter.ToSingle(values, 0);
+            return value;
         }
     }
 }
