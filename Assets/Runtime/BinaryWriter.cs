@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Text;
 
 namespace ElinBinary {
     public static class BinaryWriter {
@@ -102,7 +103,6 @@ namespace ElinBinary {
             index++;
             buffer[index] = (byte)(value >> 24);
             index++;
-
         }
         public static void WriteIntArray(byte[] buffer, int[] values, ref int index) {
             WriteUshort(buffer, (ushort)values.Length, ref index);
@@ -168,14 +168,60 @@ namespace ElinBinary {
             }
         }
         public static void WriteFloat(byte[] buffer, float value, ref int index) {
-            byte[] values = new byte[4];
-            values = BitConverter.GetBytes(value);
-            // WriteByteArray(buffer, values, ref index);
-            for (int i = 0; i < 4; i++) {
-                WriteByte(buffer, values[i], ref index);
-            }
-            
+            // 官方接口
+            // byte[] values = new byte[4];
+            // values = BitConverter.GetBytes(value);
+            // // WriteByteArray(buffer, values, ref index);
+            // for (int i = 0; i < 4; i++) {
+            //     WriteByte(buffer, values[i], ref index);
+            // }
+            Bit32 bit32 = new Bit32();
+            bit32.floatValue = value;
+            WriteInt(buffer, bit32.intValue, ref index);
+
         }
-        
+        public static void WriteFloatArray(byte[] buffer, float[] values, ref int index) {
+            WriteUshort(buffer, (ushort)values.Length, ref index);
+            for (int i = 0; i < values.Length; i++) {
+                WriteFloat(buffer, values[i], ref index);
+            }
+        }
+        public static void WriteDouble(byte[] buffer, double value, ref int index) {
+            Bit64 bit = new Bit64();
+            bit.doubleValue = value;
+            WriteLong(buffer, bit.longValue, ref index);
+        }
+        public static void WtiteDoubleArray(byte[] buffer, double[] values, ref int index) {
+            WriteUshort(buffer, (ushort)values.Length, ref index);
+            for (int i = 0; i < values.Length; i++) {
+                WriteDouble(buffer, values[i], ref index);
+            }
+        }
+        public static void WriteDemical(byte[] buffer, decimal value, ref int index) {
+            Bit128 bit = new Bit128();
+            bit.decimalValues = value;
+            WriteByte(buffer, bit.b0, ref index);
+            WriteByte(buffer, bit.b1, ref index);
+            WriteByte(buffer, bit.b2, ref index);
+            WriteByte(buffer, bit.b3, ref index);
+            WriteByte(buffer, bit.b4, ref index);
+            WriteByte(buffer, bit.b5, ref index);
+            WriteByte(buffer, bit.b6, ref index);
+            WriteByte(buffer, bit.b7, ref index);
+            WriteByte(buffer, bit.b8, ref index);
+            WriteByte(buffer, bit.b9, ref index);
+            WriteByte(buffer, bit.b10, ref index);
+            WriteByte(buffer, bit.b11, ref index);
+            WriteByte(buffer, bit.b12, ref index);
+            WriteByte(buffer, bit.b13, ref index);
+            WriteByte(buffer, bit.b14, ref index);
+            WriteByte(buffer, bit.b15, ref index);
+        }
+        public static void WriteDemicalArray(byte[] buffer, decimal[] values, ref int index) {
+            WriteUshort(buffer, (ushort)values.Length, ref index);
+            for(int i=0;i<values.Length;i++){
+                WriteDemical(buffer,values[i],ref index);
+            }
+        }
     }
 }

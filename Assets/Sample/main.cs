@@ -2,10 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using RD = System.Random;
+
 namespace ElinBinary.sample {
     public class main : MonoBehaviour {
+
+        // int min
+        // int (min~0)
+        void Test() {
+            byte[] buffer = new byte[2];
+            RD rd = new RD();
+            for (int i = 0; i < 40000; i += 1) {
+                int offset = 0;
+                short value = (short)rd.Next(short.MinValue, 0);
+                ElinBinary.BinaryWriter.WriteShort(buffer, value, ref offset);
+                offset = 0;
+                short value2 = ElinBinary.BinaryReader.ReadShort(buffer, ref offset);
+                Debug.Assert(value == value2);
+            }
+        }
+
         // Start is called before the first frame update
         void Start() {
+            Test();
             // int a = -1;
             int index = 2;
             int index1 = 2;
@@ -52,10 +71,15 @@ namespace ElinBinary.sample {
             // string b = BinaryReader.ReadString(buffer, ref index1);
             // Debug.Log(b);
 
-            float a = 12.5f;
+            float a = -12.5f;
             BinaryWriter.WriteFloat(buffer, a, ref index);
             float b = BinaryReader.ReadFloat(buffer, ref index1);
             Debug.Log(b);
+
+            // int x = -16278084;
+            // short y = (short)x;
+            // Debug.Log(Convert.ToString(x, 2));
+            // Debug.Log(Convert.ToString(y, 2));
         }
 
         // Update is called once per frame

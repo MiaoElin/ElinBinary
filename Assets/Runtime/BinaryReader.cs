@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 namespace ElinBinary {
     public static class BinaryReader {
         // sbyte sbyte[]  byte byte[]
@@ -149,11 +150,14 @@ namespace ElinBinary {
             return values;
         }
         public static string ReadString(byte[] buffer, ref int index) {
-            char[] values = ReadCharArray(buffer, ref index);
-            string value = "";
-            for (int i = 0; i < values.Length; i++) {
-                value = value + values[i];
-            }
+            // char[] values = ReadCharArray(buffer, ref index);
+            // string value = new String(values);
+            // string value = "";
+            // for (int i = 0; i < values.Length; i++) {
+            //     value = value + values[i];
+            // }
+            ushort length = ReadUshort(buffer, ref index);
+            string value = Encoding.UTF8.GetString(buffer, index, length);
             return value;
         }
         public static string[] ReadStringArray(byte[] buffer, ref int index) {
@@ -165,13 +169,67 @@ namespace ElinBinary {
             return values;
         }
         public static float ReadFloat(byte[] buffer, ref int index) {
-            byte[] values = new byte[4];
-            for (int i = 0; i < 4; i++) {
-                values[i] = buffer[index];
-                index++;
+            // 官方接口
+            // byte[] values = new byte[4];
+            // for (int i = 0; i < 4; i++) {
+            //     values[i] = buffer[index];
+            //     index++;
+            // }
+            // float value = BitConverter.ToSingle(values, 0);
+            // return value;
+            int value = ReadInt(buffer, ref index);
+            Bit32 bit = new Bit32();
+            bit.intValue = value;
+            return bit.floatValue;
+        }
+        public static float[] ReadFloatArray(byte[] buffer, ref int index) {
+            ushort length = ReadUshort(buffer, ref index);
+            float[] values = new float[length];
+            for (int i = 0; i < length; i++) {
+                values[i] = ReadFloat(buffer, ref index);
             }
-            float value = BitConverter.ToSingle(values, 0);
-            return value;
+            return values;
+        }
+        public static double ReadDouble(byte[] buffer, ref int index) {
+            Bit64 bit = new Bit64();
+            bit.longValue = ReadLong(buffer, ref index);
+            return bit.doubleValue;
+        }
+        public static double[] ReadDoubleArray(byte[] buffer, ref int index) {
+            ushort length = ReadUshort(buffer, ref index);
+            double[] values = new double[length];
+            for (int i = 0; i < length; i++) {
+                values[i] = ReadDouble(buffer, ref index);
+            }
+            return values;
+        }
+        public static decimal ReadDemical(byte[] buffer, ref int index) {
+            Bit128 bit = new Bit128();
+            bit.b0 = ReadByte(buffer, ref index);
+            bit.b1 = ReadByte(buffer, ref index);
+            bit.b2 = ReadByte(buffer, ref index);
+            bit.b3 = ReadByte(buffer, ref index);
+            bit.b4 = ReadByte(buffer, ref index);
+            bit.b5 = ReadByte(buffer, ref index);
+            bit.b6 = ReadByte(buffer, ref index);
+            bit.b7 = ReadByte(buffer, ref index);
+            bit.b8 = ReadByte(buffer, ref index);
+            bit.b9 = ReadByte(buffer, ref index);
+            bit.b10 = ReadByte(buffer, ref index);
+            bit.b11 = ReadByte(buffer, ref index);
+            bit.b12 = ReadByte(buffer, ref index);
+            bit.b13 = ReadByte(buffer, ref index);
+            bit.b14 = ReadByte(buffer, ref index);
+            bit.b15 = ReadByte(buffer, ref index);
+            return bit.decimalValues;
+        }
+        public static decimal[] ReadDemicalArray(byte[] buffer, ref int index) {
+            ushort length = ReadUshort(buffer, ref index);
+            decimal[] values = new decimal[length];
+            for (int i = 0; i < length; i++) {
+                values[i] = ReadDemical(buffer, ref index);
+            }
+            return values;
         }
     }
 }
