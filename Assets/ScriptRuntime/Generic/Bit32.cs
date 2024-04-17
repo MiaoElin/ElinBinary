@@ -9,7 +9,5 @@ namespace ElinBinary {
         public uint uintValue;
         [FieldOffset(0)]
         public float floatValue;
-        
-
     }
 }
