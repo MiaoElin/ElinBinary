@@ -64,14 +64,14 @@ namespace ElinBinary {
             return values;
         }
         
-        public static short ReadShort(byte[] buffer, ref int index) {
-            short value = 0;
-            value = (short)(buffer[index] << 0);
-            index++;
-            value = (short)(value | (buffer[index] << 8));
-            index++;
-            return value;
-        }
+        // public static short ReadShort(byte[] buffer, ref int index) {
+        //     short value = 0;
+        //     value = (short)(buffer[index] << 0);
+        //     index++;
+        //     value = (short)(value | (buffer[index] << 8));
+        //     index++;
+        //     return value;
+        // }
 
         public static ushort ReadUshort(byte[] buffer, ref int index) {
             ushort value = 0;
