@@ -4,15 +4,15 @@ using System.Collections.Generic;
 public static class GFPathFinding {
 
     // 用有序的哈希表存储已经打开的格子
-    public static SortedSet<RectCell2D> openSet;
+    public static SortedSet<RectCell2D> openSet = new SortedSet<RectCell2D>();
     // 用字典存储打开的格子，便于一次找到
-    public static Dictionary<Vector2Int, RectCell2D> openSetDic;
-    public static SortedSet<RectCell2D> closeSet;
-    public static Dictionary<Vector2Int, RectCell2D> closeSetDic;
+    public static Dictionary<Vector2Int, RectCell2D> openSetDic = new Dictionary<Vector2Int, RectCell2D>();
+    public static SortedSet<RectCell2D> closeSet = new SortedSet<RectCell2D>();
+    public static Dictionary<Vector2Int, RectCell2D> closeSetDic = new Dictionary<Vector2Int, RectCell2D>();
     const int CELLSIZE = 10;
 
     readonly static Vector2Int[] neighbors = new Vector2Int[4]{
-        // 优先级 右 下 左 上
+        // 这里没有优先级
         new Vector2Int(1,0),
         new Vector2Int(0,-1),
         new Vector2Int(-1,0),
@@ -29,10 +29,11 @@ public static class GFPathFinding {
 
     }
 
-    public static int Astar(Vector2Int start, Vector2Int end, HashSet<Vector2Int> blockSet, int limiteCount, Vector2Int[] path) {
+    public static int Astar(Vector2Int start, Vector2Int end, HashSet<Vector2Int> blockSet, int limiteCount, out List<Vector2Int> path) {
         // -1无路
         // 1有路
         // -2超出步数
+        path = new List<Vector2Int>();
 
         openSet.Clear();
         openSetDic.Clear();
@@ -40,7 +41,7 @@ public static class GFPathFinding {
         closeSetDic.Clear();
 
         int stepCount = 0;
-        int count = 0;
+        // int count = 0;
 
         RectCell2D startRect = new RectCell2D();
         startRect.Init(start, 0, 0, 0, null);
@@ -57,7 +58,7 @@ public static class GFPathFinding {
 
             // 当步数没超
             // 找到最近的那个，移除
-            var cur = openSet.Min;
+            RectCell2D cur = openSet.Min;
             openSet.Remove(cur);
             openSetDic.Remove(cur.pos);
             closeSet.Add(cur);
@@ -66,17 +67,18 @@ public static class GFPathFinding {
             // 遍历四个方向
             for (int i = 0; i < 4; i++) {
                 Vector2Int neighborPos = cur.pos + neighbors[i];
-                if (blockSet.Contains(neighborPos)) {
+                if (blockSet.Contains(neighborPos) || closeSetDic.ContainsKey(neighborPos)) {
                     continue;
                 }
                 // 如果到达 
                 if (neighborPos == end) {
-                    count = 0;
+                    // count = 0;
                     // 从最后一个开始回溯，因为每个格子的父节点只有一个，而子节点可以多个，所以存父节点更好             从头开始生成路径 、、 后面再试，
-                    path[count++] = end;
-                    path[count++] = cur.pos;
+                    path.Add(end);
+                    // count++;
+                    path.Add(cur.pos);
                     while (cur.parent != null) {
-                        path[count++] = cur.parent.pos;
+                        path.Add(cur.parent.pos);
                         cur = cur.parent;
                     }
                     stepCount += 1;
@@ -88,26 +90,22 @@ public static class GFPathFinding {
                 float hCost = H_Manhattan(neighborPos, end);
                 float fCost = gCost + hCost;
                 // 判断openSetDic里是否已经有这个格子
-                RectCell2D rectNeighbor = new RectCell2D();
+                RectCell2D rectNeighbor;
                 bool has = openSetDic.TryGetValue(neighborPos, out rectNeighbor);
                 if (has) {
                     // 如果格子新的f值小于之前存的，则用新的值覆盖
                     if (fCost < rectNeighbor.fCost) {
-                        rectNeighbor.fCost = fCost;
-                        rectNeighbor.gCost = gCost;
-                        rectNeighbor.hCost = hCost;
-                        rectNeighbor.parent = cur;
+                        rectNeighbor.Init(neighborPos, fCost, gCost, hCost, cur);
                     }
                 } else {
-                    rectNeighbor.pos = neighborPos;
-                    rectNeighbor.gCost = gCost;
-                    rectNeighbor.fCost = fCost;
-                    rectNeighbor.hCost = hCost;
-                    rectNeighbor.parent = cur;
+                    rectNeighbor = new RectCell2D();
+                    rectNeighbor.Init(neighborPos, fCost, gCost, hCost, cur);
+                    Debug.Assert(rectNeighbor != null);
                     openSet.Add(rectNeighbor);
                     openSetDic.Add(neighborPos, rectNeighbor);
                 }
             }
+            stepCount++;
         }
         return -1;
     }
