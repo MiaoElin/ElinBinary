@@ -83,5 +83,31 @@ public class RectCell2D : IEquatable<RectCell2D>, IComparable<RectCell2D> {
         } else {
             return 0;
         }
+
+        // if (fCost < other.fCost) {
+        //     return -1;
+        // } else if (fCost > other.fCost) {
+        //     return 1;
+        // } else {
+        //     if (hCost < other.hCost) {
+        //         return -1;
+        //     } else if (hCost > other.hCost) {
+        //         return 1;
+        //     } else {
+        //         if (pos.x > other.pos.x) {
+        //             return -1;
+        //         } else if (pos.x < other.pos.x) {
+        //             return 1;
+        //         } else {
+        //             if (pos.y > other.pos.y) {
+        //                 return -1;
+        //             } else if (pos.y < other.pos.y) {
+        //                 return 1;
+        //             } else {
+        //                 return 0;
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
