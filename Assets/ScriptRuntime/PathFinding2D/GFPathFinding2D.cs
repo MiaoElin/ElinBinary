@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public static class GFPathFinding {
+public static class GFPathFinding2D {
 
     // 用有序的哈希表存储已经打开的格子
     public static SortedSet<RectCell2D> openSet = new SortedSet<RectCell2D>();

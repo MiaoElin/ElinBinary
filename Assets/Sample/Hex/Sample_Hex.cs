@@ -25,8 +25,8 @@ public class Sample_Hex : MonoBehaviour {
         // Vector2 mousePos = Input.mousePosition;
         // Vector3 mouseWordPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 10));
 
-        Vector2 center = GFHex.WorldPosToGridPos2Int(new Vector2(mouse.position.x, mouse.position.z), outterRadius, hexCells);
-        GUILayout.Label($"Mouse Pos{center}");
+        Vector2 centerLogic = GFHex.WorldPosToGridPos2Int(new Vector2(mouse.position.x, mouse.position.z), outterRadius, hexCells);
+        GUILayout.Label($"Mouse Pos{centerLogic}");
 
         if (hexCells == null) {
             return;

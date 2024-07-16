@@ -6,6 +6,7 @@ public struct HexCell {
     public Vector2Int gridPos2Int;
     public Vector3 worldPos;
 
+
     // 用每行的 y%2 余数为0的，x轴从-(y/2)开始，如果余数为1，则x轴从-((y-1)/2)开始。
     // 01  23  34  56  每两行为一组，x轴开始的数一样，每加两行，x轴开始的数就减1；
     // 这样可以通过y找到x以及z （z = -x -y）
@@ -22,19 +23,19 @@ public struct HexCell {
         gridPos3Int.y = y;
         worldPos.y = 0;
 
-        if (y % 2 == 0) {
+        if (y % 2 == 1) {
             // grid3Int的x
             gridPos3Int.x = (-y / 2) + x;
             // worldPos的x
-            worldPos.x = gridPos2Int.x * innerRadius * 2f + innerRadius;
+            worldPos.x = gridPos2Int.x * innerRadius * 2f + innerRadius * 2;
 
-        } else if (y % 2 == 1) {
+        } else if (y % 2 == 0) {
             gridPos3Int.x = (-(y - 1) / 2) + x;
-            worldPos.x = gridPos2Int.x * innerRadius * 2f;
+            worldPos.x = gridPos2Int.x * innerRadius * 2f + innerRadius;
         }
         // gridPos3Int的z
         gridPos3Int.z = -gridPos3Int.x - gridPos3Int.y;
-        worldPos.z = gridPos2Int.y * outterRadius * 1.5f;
+        worldPos.z = gridPos2Int.y * outterRadius * 1.5f + outterRadius;
 
 
     }

@@ -14,12 +14,12 @@ public class PathFinding2DSample : MonoBehaviour {
         // RectCell2D rect = new RectCell2D();
         // rect.Init(Vector2Int.one, 20, 10, 10, null);
 
-        // GFPathFinding.openSet.Add(rect);
-        // // GFPathFinding.openSet.Remove(rect);
-        // Debug.Log(GFPathFinding.openSet.Count);
+        // GFPathFinding2D.openSet.Add(rect);
+        // // GFPathFinding2D.openSet.Remove(rect);
+        // Debug.Log(GFPathFinding2D.openSet.Count);
         path = new List<Vector2Int>();
-        GFPathFinding.openSet?.Clear();
-        GFPathFinding.closeSet?.Clear();
+        GFPathFinding2D.openSet?.Clear();
+        GFPathFinding2D.closeSet?.Clear();
     }
     void Update() {
         // 按下鼠标左键
@@ -28,7 +28,7 @@ public class PathFinding2DSample : MonoBehaviour {
             start = mouseGridPos;
         } else if (Input.GetMouseButtonDown(1)) {
             end = mouseGridPos;
-            GFPathFinding.Astar(start, end, blockSet, limiteCount, out path);
+            GFPathFinding2D.Astar(start, end, blockSet, limiteCount, out path);
         } else if (Input.GetMouseButton(2)) {
             blockSet.Add(mouseGridPos);
         }
@@ -37,15 +37,15 @@ public class PathFinding2DSample : MonoBehaviour {
     void OnDrawGizmos() {
 
         Gizmos.color = Color.yellow;
-        if (GFPathFinding.openSet != null) {
-            foreach (var rect in GFPathFinding.openSet) {
+        if (GFPathFinding2D.openSet != null) {
+            foreach (var rect in GFPathFinding2D.openSet) {
                 Gizmos.DrawCube(new Vector3(rect.pos.x, rect.pos.y, 0), Vector3.one);
             }
         }
 
         Gizmos.color = Color.black;
-        if (GFPathFinding.closeSet != null) {
-            foreach (var rect in GFPathFinding.closeSet) {
+        if (GFPathFinding2D.closeSet != null) {
+            foreach (var rect in GFPathFinding2D.closeSet) {
                 Gizmos.DrawCube(new Vector3(rect.pos.x, rect.pos.y, 0), Vector3.one);
             }
         }

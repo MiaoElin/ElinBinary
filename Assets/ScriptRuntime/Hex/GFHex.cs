@@ -14,7 +14,7 @@ public static class GFHex {
         int minX;
         int maxX;
 
-        if (y % 2 == 0) {
+        if (y % 2 == 1) {
             minX = -y / 2;
         } else {
             minX = -(y - 1) / 2;
@@ -98,12 +98,12 @@ public static class GFHex {
     public static Vector2 Grid2IntToWorldPos(Vector2Int grid2Int, float outterRadius) {
         Vector2 result;
         float innerRadius = outterRadius * Mathf.Sqrt(3) / 2;
-        if (grid2Int.y % 2 == 0) {
-            result.x = grid2Int.x * innerRadius * 2f + innerRadius;
+        if (grid2Int.y % 2 == 1) {
+            result.x = grid2Int.x * innerRadius * 2f + innerRadius * 2f;
         } else {
-            result.x = grid2Int.x * innerRadius * 2f;
+            result.x = grid2Int.x * innerRadius * 2f + innerRadius;
         }
-        result.y = outterRadius * 1.5f * grid2Int.y;
+        result.y = outterRadius * 1.5f * grid2Int.y + outterRadius;
         return result;
     }
 
