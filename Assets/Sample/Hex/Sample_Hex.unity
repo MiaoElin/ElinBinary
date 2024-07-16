@@ -292,7 +292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1337527204
 Transform:
   m_ObjectHideFlags: 0
@@ -506,6 +506,7 @@ MonoBehaviour:
   gridWidth: 10
   gridHeight: 10
   outterRadius: 2
+  mouse: {fileID: 1252375401}
 --- !u!4 &2014866431
 Transform:
   m_ObjectHideFlags: 0
