@@ -78,7 +78,7 @@ public static class GFHex {
         for (int x = min.x; x <= max.x; x++) {
             for (int y = min.y; y <= max.y; y++) {
                 Vector2Int curlogic = new Vector2Int(x, y);
-                int index = GridIndex(10, 10, curlogic);
+                int index = GetIndex(10, 10, curlogic);
                 if (index == -1) {
                     continue;
                 }
@@ -115,7 +115,7 @@ public static class GFHex {
 
     // }
 
-    public static int GridIndex(int gridWidth, int gridHeight, Vector2Int gridPos2Int) {
+    public static int GetIndex(int gridWidth, int gridHeight, Vector2Int gridPos2Int) {
         if (gridPos2Int.x < 0 || gridPos2Int.x >= gridWidth) {
             return -1;
         }
