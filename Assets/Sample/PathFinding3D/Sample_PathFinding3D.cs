@@ -41,22 +41,18 @@ public class Sample_PathFinding3D : MonoBehaviour {
                 var index = GFHex.GetIndex(gridWidth, gridHeight, hitGrid2Pos);
                 // 看要不要加一个dic 存格子2坐标系为字典，方便查找
                 PathHexCell hex = hexCells[index];
-                blockSet.Add(hex);
-                hex.isClose = true;
+                if (!hex.isClose) {
+                    hex.isClose = true;
+                    blockSet.Add(hex);
+                } else {
+                    hex.isClose = false;
+                    blockSet.Remove(hex);
+                }
+
             }
         }
 
         if (Input.GetMouseButtonDown(1)) {
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            bool has = Physics.Raycast(ray, out RaycastHit hit, 100, Ground);
-            if (has) {
-                Vector2Int hitGrid2Pos = GFHex.WorldPosToGridPos2Int(hit.point, outterRadius);
-                var index = GFHex.GetIndex(gridWidth, gridHeight, hitGrid2Pos);
-                // 看要不要加一个dic 存格子2坐标系为字典，方便查找
-                PathHexCell hex = hexCells[index];
-                blockSet.Remove(hex);
-                hex.isClose = false;
-            }
         }
     }
 

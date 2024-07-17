@@ -44,10 +44,17 @@ public static class GFHex {
     public static Vector2Int WorldPosToGridPos2Int(Vector3 worldPos, float outterRadius) {
         float innerRadius = outterRadius * Mathf.Sqrt(3) / 2;
         Vector2Int guessPos = Vector2Int.zero;
-        guessPos.x = Mathf.CeilToInt(worldPos.x / (innerRadius * 2f));
-        guessPos.y = Mathf.CeilToInt(worldPos.z / (outterRadius * 1.5f));
+        guessPos.x = Mathf.CeilToInt((worldPos.x - innerRadius) / (innerRadius * 2f));
+        guessPos.y = Mathf.CeilToInt((worldPos.z - outterRadius) / (outterRadius * 1.5f));
 
         Vector2Int min = new Vector2Int(guessPos.x - 1, guessPos.y - 1);
+
+        // {
+        //     guessPos.x = Mathf.CeilToInt((worldPos.x - innerRadius) / (innerRadius * 2f));
+        //     guessPos.y = Mathf.CeilToInt((worldPos.z - 2f * outterRadius) / (outterRadius * 1.5f));
+              // y可以直接减2f 就是确定的，x有单双行差别不行，-innerRadius 是有一行刚好堆上，有一行可能对不上
+        //     Vector2Int min = new Vector2Int(guessPos.x - 1, guessPos.y);
+        // }
         Vector2Int max = guessPos;
         float nearlyDistance = float.MaxValue;
         Vector2Int result = guessPos;
