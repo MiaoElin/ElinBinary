@@ -11,6 +11,7 @@ public class PathHexCell : IEquatable<PathHexCell>, IComparable<PathHexCell> {
     public float hCost;
 
     public PathHexCell parent;
+    public bool isClose;
 
     // 用每行的 y%2 余数为0的，x轴从-(y/2)开始，如果余数为1，则x轴从-((y-1)/2)开始。
     // 01  23  34  56  每两行为一组，x轴开始的数一样，每加两行，x轴开始的数就减1；
@@ -43,6 +44,10 @@ public class PathHexCell : IEquatable<PathHexCell>, IComparable<PathHexCell> {
         worldPos.z = gridPos2Int.y * outterRadius * 1.5f + outterRadius;
 
 
+    }
+
+    public void SetHeight(Action<PathHexCell> action) {
+        action(this);
     }
 
     public void InitFGH(float f, float g, float h, PathHexCell parent) {

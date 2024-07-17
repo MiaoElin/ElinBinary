@@ -41,11 +41,11 @@ public static class GFHex {
         return arround;
     }
 
-    public static Vector2Int WorldPosToGridPos2Int(Vector2 worldPos, float outterRadius) {
+    public static Vector2Int WorldPosToGridPos2Int(Vector3 worldPos, float outterRadius) {
         float innerRadius = outterRadius * Mathf.Sqrt(3) / 2;
         Vector2Int guessPos = Vector2Int.zero;
         guessPos.x = Mathf.CeilToInt(worldPos.x / (innerRadius * 2f));
-        guessPos.y = Mathf.CeilToInt(worldPos.y / (outterRadius * 1.5f));
+        guessPos.y = Mathf.CeilToInt(worldPos.z / (outterRadius * 1.5f));
 
         Vector2Int min = new Vector2Int(guessPos.x - 1, guessPos.y - 1);
         Vector2Int max = guessPos;
@@ -55,7 +55,7 @@ public static class GFHex {
             for (int y = min.y; y <= max.y; y++) {
                 Vector2Int curlogic = new Vector2Int(x, y);
                 Vector2 cur = Grid2IntToWorldPos(curlogic, outterRadius);
-                float distanceSqr = Vector2.SqrMagnitude(worldPos - cur);
+                float distanceSqr = Vector2.SqrMagnitude(new Vector2(worldPos.x, worldPos.z) - cur);
                 if (distanceSqr < nearlyDistance) {
                     nearlyDistance = distanceSqr;
                     result = curlogic;
