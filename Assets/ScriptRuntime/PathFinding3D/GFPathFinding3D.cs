@@ -69,10 +69,6 @@ public static class GFpathFinding3D {
                 if (!isWalkable(neighbor) || closeDic.ContainsKey(neighborPos)) {
                     continue;
                 }
-                if (cur == starHex) {
-                    Debug.Log("zhongxin:" + cur.gridPos3Int);
-                    Debug.Log(neighbor.gridPos3Int);
-                }
 
                 if (neighborPos == endHex.gridPos3Int) {
                     path.Add(endHex.worldPos);
@@ -84,8 +80,8 @@ public static class GFpathFinding3D {
                     return true;
                 }
 
-                float gCost = G_COST_BASE * (1 + Mathf.Abs(cur.worldPos.y - neighbor.worldPos.y) / OUTTERRADIUS);
-                // float gCost = G_COST_BASE;
+                // float gCost = G_COST_BASE * (1 + Mathf.Abs(cur.worldPos.y - neighbor.worldPos.y) / OUTTERRADIUS);
+                float gCost = G_COST_BASE;
                 float hCost = Distance(neighborPos, endHex.gridPos3Int);
                 float fCost = gCost + hCost;
                 if (openSetDic.ContainsKey(neighborPos)) {
