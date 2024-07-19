@@ -21,7 +21,7 @@ public class Sample_PathFinding3D : MonoBehaviour {
 
     void Start() {
 
-        GFpathFinding3D.Init(outterRadius, gridWidth, gridHeight);
+        GFpathFindingHex3D.Init(outterRadius, gridWidth, gridHeight);
 
         path = new List<Vector3>();
         pathObjectDic = new Dictionary<Vector3, GameObject>();
@@ -92,7 +92,7 @@ public class Sample_PathFinding3D : MonoBehaviour {
         }
 
         if (startCell != null && endCell != null) {
-            bool has = GFpathFinding3D.Astar(startCell.worldPos,
+            bool has = GFpathFindingHex3D.Astar(startCell.worldPos,
                   endCell.worldPos,
                   (PathHexCell hexCell) => { return !blockSet.Contains(hexCell); },
                   (int index) => { return hexCells[index]; },

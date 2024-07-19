@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public static class GFpathFinding3D {
+public static class GFpathFindingHex3D {
     public static SortedSet<PathHexCell> openSet = new SortedSet<PathHexCell>();
     // 用Grid3坐标做key
     public static Dictionary<Vector3Int, PathHexCell> openSetDic = new Dictionary<Vector3Int, PathHexCell>();
