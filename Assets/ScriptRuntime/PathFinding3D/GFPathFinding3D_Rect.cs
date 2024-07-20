@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public static class GFpathFindingRect3D {
+public static class GFpathFinding3D_Rect {
 
-    public static SortedSet<RectCell3D> openSet;
-    public static Dictionary<Vector2Int, RectCell3D> openDic;
+    public static SortedSet<RectCell3D> openSet = new SortedSet<RectCell3D>();
+    public static Dictionary<Vector2Int, RectCell3D> openDic = new Dictionary<Vector2Int, RectCell3D>();
 
-    public static SortedSet<RectCell3D> closeSet;
-    public static Dictionary<Vector2Int, RectCell3D> closeDic;
+    public static SortedSet<RectCell3D> closeSet = new SortedSet<RectCell3D>();
+    public static Dictionary<Vector2Int, RectCell3D> closeDic = new Dictionary<Vector2Int, RectCell3D>();
 
     static int GRIDWIDTH;
     static int GRIDHEIGHT;
@@ -73,7 +73,18 @@ public static class GFpathFindingRect3D {
                 if (!isWalkable(neighborPos) || closeDic.ContainsKey(neighborPos)) {
                     continue;
                 }
-                RectCell3D neighbor = GetRectCell3D(GetIndex(neighborPos));
+                int left = i - 1;
+                if ((left == -1)) {
+                    left = 7;
+                }
+                if (!isWalkable(neighbors[left]) && !isWalkable(neighbors[(i + 1) % 8])) {
+                    continue;
+                }
+                int index = GetIndex(neighborPos);
+                if (index == -1) {
+                    continue;
+                }
+                RectCell3D neighbor = GetRectCell3D(index);
 
                 if (neighbor.pos == endPos) {
                     path.Add(neighbor.worldPos);
@@ -106,8 +117,8 @@ public static class GFpathFindingRect3D {
     }
 
     public static Vector2Int WorldToGridPos(Vector3 worldPos) {
-        float x = (worldPos.x - SIDELENGTH / 2) / SIDELENGTH;
-        float y = (worldPos.y - SIDELENGTH / 2) / SIDELENGTH;
+        float x = (worldPos.x - SIDELENGTH) / SIDELENGTH;
+        float y = (worldPos.z - SIDELENGTH) / SIDELENGTH;
         return new Vector2Int(Mathf.CeilToInt(x), Mathf.CeilToInt(y));
     }
 

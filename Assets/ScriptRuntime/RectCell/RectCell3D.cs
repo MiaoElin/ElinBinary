@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class RectCell3D : IEquatable<RectCell2D>, IComparable<RectCell2D> {
+public class RectCell3D : IEquatable<RectCell3D>, IComparable<RectCell3D> {
     public Vector2Int pos;
     public Vector3 worldPos;
     public float fCost;
@@ -12,10 +12,12 @@ public class RectCell3D : IEquatable<RectCell2D>, IComparable<RectCell2D> {
 
     public RectCell3D parent;
 
+    public bool isClose;
+
     public void Ctor(int x, int y, float sideLength) {
         this.pos = new Vector2Int(x, y);
         this.worldPos.x = x * sideLength + sideLength / 2;
-        this.worldPos.y = y * sideLength + sideLength / 2;
+        this.worldPos.z = y * sideLength + sideLength / 2;
     }
 
     public void Init(float f, float g, float h, RectCell3D parent) {
@@ -34,11 +36,25 @@ public class RectCell3D : IEquatable<RectCell2D>, IComparable<RectCell2D> {
         arround[4] = new Vector2Int(pos.x + 1, pos.y - 1); // 右下
         arround[5] = new Vector2Int(pos.x, pos.y - 1);     // 中下
         arround[6] = new Vector2Int(pos.x - 1, pos.y - 1); // 左下
-        arround[1] = new Vector2Int(pos.x - 1, pos.y);     // 左中
+        arround[7] = new Vector2Int(pos.x - 1, pos.y);     // 左中
         return arround;
     }
 
-    bool IEquatable<RectCell2D>.Equals(RectCell2D other) {
+    public Vector3[] GetArroundWorldPos(float sideLength) {
+        Vector3[] arround = new Vector3[8];
+        arround[0] = new Vector3(worldPos.x - sideLength, worldPos.y, worldPos.z + sideLength); // 左上
+        arround[1] = new Vector3(worldPos.x, worldPos.y, worldPos.z + sideLength);     // 上
+        arround[2] = new Vector3(worldPos.x + sideLength, worldPos.y, worldPos.z + sideLength); // 右上
+        arround[3] = new Vector3(worldPos.x + sideLength, worldPos.y, worldPos.z);     // 右中
+        arround[4] = new Vector3(worldPos.x + sideLength, worldPos.y, worldPos.z - sideLength); // 右下
+        arround[5] = new Vector3(worldPos.x, worldPos.y, worldPos.z - sideLength);     // 中下
+        arround[6] = new Vector3(worldPos.x - sideLength, worldPos.y, worldPos.z - sideLength); // 左下
+        arround[7] = new Vector3(worldPos.x - sideLength, worldPos.y, worldPos.z);     // 左中
+        return arround;
+    }
+
+
+    bool IEquatable<RectCell3D>.Equals(RectCell3D other) {
         return pos == other.pos;
     }
 
@@ -83,7 +99,7 @@ public class RectCell3D : IEquatable<RectCell2D>, IComparable<RectCell2D> {
     // }
 
 
-    int IComparable<RectCell2D>.CompareTo(RectCell2D other) {
+    int IComparable<RectCell3D>.CompareTo(RectCell3D other) {
 
         Bit128 fKey = new Bit128();
         fKey.i32_0 = pos.y;

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class Sample_PathFinding3D : MonoBehaviour {
+public class Sample_PathFinding3D_Hex : MonoBehaviour {
 
     public int gridWidth;
     public int gridHeight;
@@ -21,7 +21,7 @@ public class Sample_PathFinding3D : MonoBehaviour {
 
     void Start() {
 
-        GFpathFindingHex3D.Init(outterRadius, gridWidth, gridHeight);
+        GFpathFinding3D_Hex.Init(outterRadius, gridWidth, gridHeight);
 
         path = new List<Vector3>();
         pathObjectDic = new Dictionary<Vector3, GameObject>();
@@ -92,7 +92,7 @@ public class Sample_PathFinding3D : MonoBehaviour {
         }
 
         if (startCell != null && endCell != null) {
-            bool has = GFpathFindingHex3D.Astar(startCell.worldPos,
+            bool has = GFpathFinding3D_Hex.Astar(startCell.worldPos,
                   endCell.worldPos,
                   (PathHexCell hexCell) => { return !blockSet.Contains(hexCell); },
                   (int index) => { return hexCells[index]; },
