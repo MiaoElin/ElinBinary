@@ -4,7 +4,7 @@ using System;
 
 public static class GFpathFinding3D_Rect {
 
-    public static SortedSet<RectCell3D> openSet = new SortedSet<RectCell3D>();
+    public static HashSet<RectCell3D> openSet = new HashSet<RectCell3D>();
     public static Dictionary<Vector2Int, RectCell3D> openDic = new Dictionary<Vector2Int, RectCell3D>();
 
     public static SortedSet<RectCell3D> closeSet = new SortedSet<RectCell3D>();
@@ -63,7 +63,7 @@ public static class GFpathFinding3D_Rect {
         openDic.Add(startPos, rectStar);
 
         while (openSet.Count > 0) {
-            var cur = openSet.Min;
+            var cur = OpenSet_FindMin();
             openSet.Remove(cur);
             openDic.Remove(cur.pos);
             if (openSet.Contains(cur)) {
@@ -79,7 +79,7 @@ public static class GFpathFinding3D_Rect {
             cur.isClose = true;
             closeDic.Add(cur.pos, cur);
 
-            RectCell3D[] tempNeighbors = cur.GetArroundRect();
+            RectTemp[] tempNeighbors = cur.GetArroundRect();
             for (int i = 1; i < 8; i = i + 2) {
                 if (!isWalkable(tempNeighbors[i].pos)) {
                     tempNeighbors[i - 1].impassable = true;
@@ -154,4 +154,14 @@ public static class GFpathFinding3D_Rect {
         return G_COST_BASE * (Mathf.Abs(curPos.x - endPos.x) + Mathf.Abs(curPos.y - endPos.y));
     }
 
+    public static RectCell3D OpenSet_FindMin() {
+        RectCell3D min = new RectCell3D();
+        min.fCost = float.MaxValue;
+        foreach (var rect in openSet) {
+            if (rect.fCost < min.fCost) {
+                min = rect;
+            }
+        }
+        return min;
+    }
 }

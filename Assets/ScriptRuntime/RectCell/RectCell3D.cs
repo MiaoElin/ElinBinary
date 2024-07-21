@@ -42,34 +42,35 @@ public class RectCell3D : IEquatable<RectCell3D>, IComparable<RectCell3D> {
         return arround;
     }
 
-    public RectCell3D[] GetArroundRect() {
-        RectCell3D[] arround = new RectCell3D[8];
-        RectCell3D a0 = new RectCell3D();
+    public RectTemp[] GetArroundRect() {
+        RectTemp[] arround = new RectTemp[8];
+        RectTemp a0 = new RectTemp();
         a0.pos = new Vector2Int(pos.x - 1, pos.y + 1); // 左上
         arround[0] = a0;
-        RectCell3D a1 = new RectCell3D();
+        RectTemp a1 = new RectTemp();
         a1.pos = new Vector2Int(pos.x, pos.y + 1);
         arround[1] = a1;
-        RectCell3D a2 = new RectCell3D();
+        RectTemp a2 = new RectTemp();
         a2.pos = new Vector2Int(pos.x + 1, pos.y + 1); // 右上
         arround[2] = a2;
-        RectCell3D a3 = new RectCell3D();
+        RectTemp a3 = new RectTemp();
         a3.pos = new Vector2Int(pos.x + 1, pos.y);     // 右中
         arround[3] = a3;
-        RectCell3D a4 = new RectCell3D();
+        RectTemp a4 = new RectTemp();
         a4.pos = new Vector2Int(pos.x + 1, pos.y - 1); // 右下
         arround[4] = a4;
-        RectCell3D a5 = new RectCell3D();
+        RectTemp a5 = new RectTemp();
         a5.pos = new Vector2Int(pos.x, pos.y - 1);     // 中下
         arround[5] = a5;
-        RectCell3D a6 = new RectCell3D();
+        RectTemp a6 = new RectTemp();
         a6.pos = new Vector2Int(pos.x - 1, pos.y - 1); // 左下
         arround[6] = a6;
-        RectCell3D a7 = new RectCell3D();
+        RectTemp a7 = new RectTemp();
         a7.pos = new Vector2Int(pos.x - 1, pos.y);     // 左中
         arround[7] = a7;
         return arround;
     }
+
 
     public Vector3[] GetArroundWorldPos(float sideLength) {
         Vector3[] arround = new Vector3[8];
