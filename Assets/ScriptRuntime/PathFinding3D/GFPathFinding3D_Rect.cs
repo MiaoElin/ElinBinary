@@ -41,11 +41,13 @@ public static class GFpathFinding3D_Rect {
         int endIndex = GetIndex(endPos);
         if (startIndex == -1 || endIndex == -1) {
             path = null;
+            Debug.Log("1");
             return false;
         }
 
         if (!isWalkable(startPos) || !isWalkable(endPos)) {
             path = null;
+            Debug.Log("2");
             return false;
         }
 
@@ -64,23 +66,38 @@ public static class GFpathFinding3D_Rect {
             var cur = openSet.Min;
             openSet.Remove(cur);
             openDic.Remove(cur.pos);
+            if (openSet.Contains(cur)) {
+                Debug.Log("!!!!!");
+            }
             closeSet.Add(cur);
+            int s = 0;
+            Debug.Log("cur " + cur.pos);
+            foreach (var pos in openSet) {
+                Debug.Log(s + " " + pos.pos);
+                s++;
+            }
+            cur.isClose = true;
             closeDic.Add(cur.pos, cur);
 
-            Vector2Int[] neighbors = cur.GetArround();
+            RectCell3D[] tempNeighbors = cur.GetArroundRect();
+            for (int i = 1; i < 8; i = i + 2) {
+                if (!isWalkable(tempNeighbors[i].pos)) {
+                    tempNeighbors[i - 1].impassable = true;
+                    tempNeighbors[(i + 1) % 8].impassable = true;
+                }
+            }
+
+
             for (int i = 0; i < 8; i++) {
-                var neighborPos = neighbors[i];
-                if (!isWalkable(neighborPos) || closeDic.ContainsKey(neighborPos)) {
+                var neighborTemp = tempNeighbors[i];
+                if (neighborTemp.impassable) {
                     continue;
                 }
-                int left = i - 1;
-                if ((left == -1)) {
-                    left = 7;
-                }
-                if (!isWalkable(neighbors[left]) && !isWalkable(neighbors[(i + 1) % 8])) {
+                if (!isWalkable(neighborTemp.pos) || closeDic.ContainsKey(neighborTemp.pos)) {
                     continue;
                 }
-                int index = GetIndex(neighborPos);
+
+                int index = GetIndex(neighborTemp.pos);
                 if (index == -1) {
                     continue;
                 }
@@ -93,26 +110,30 @@ public static class GFpathFinding3D_Rect {
                         path.Add(cur.parent.worldPos);
                         cur = cur.parent;
                     }
+                    Debug.Log("3");
                     return true;
                 }
-
                 float gCost = G_COST_BASE;
-                float hCost = H_Manhatan(neighborPos, endPos);
+                if (i % 2 == 0) {
+                    gCost *= 1.4f;
+                }
+                float hCost = H_Manhatan(neighbor.pos, endPos);
                 float fCost = gCost + hCost;
 
-                if (openDic.ContainsKey(neighborPos)) {
+                if (openDic.ContainsKey(neighbor.pos)) {
                     if (fCost < neighbor.fCost) {
                         neighbor.Init(fCost, gCost, hCost, cur);
                     }
                 } else {
                     neighbor.Init(fCost, gCost, hCost, cur);
                     openSet.Add(neighbor);
-                    openDic.Add(neighborPos, neighbor);
+                    openDic.Add(neighbor.pos, neighbor);
                 }
 
             }
 
         }
+        Debug.Log("4");
         return false;
     }
 

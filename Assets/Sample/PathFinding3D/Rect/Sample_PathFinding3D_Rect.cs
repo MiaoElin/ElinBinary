@@ -47,11 +47,12 @@ public class Sample_PathFinding3D_Rect : MonoBehaviour {
                 var gridPos = GFpathFinding3D_Rect.WorldToGridPos(hit.point);
                 var index = GFpathFinding3D_Rect.GetIndex(gridPos);
                 RectCell3D cell = rectCells[index];
-                blockSet.Add(cell.pos);
-                if (cell.isClose) {
-                    cell.isClose = false;
+                if (cell.isBlock) {
+                    cell.isBlock = false;
+                    blockSet.Remove(cell.pos);
                 } else {
-                    cell.isClose = true;
+                    cell.isBlock = true;
+                    blockSet.Add(cell.pos);
                 }
             }
         }
@@ -97,12 +98,10 @@ public class Sample_PathFinding3D_Rect : MonoBehaviour {
             if (hasPath) {
                 start = Vector3.zero;
                 end = Vector3.zero;
-                if (pathObjects.Count < path.Count) {
-                    foreach (var pos in path) {
-                        var pathObject = GameObject.Instantiate(prefabPath);
-                        pathObject.transform.position = pos;
-                        pathObjects.Add(pathObject);
-                    }
+                foreach (var pos in path) {
+                    var pathObject = GameObject.Instantiate(prefabPath);
+                    pathObject.transform.position = pos;
+                    pathObjects.Add(pathObject);
                 }
             }
         }
@@ -122,6 +121,9 @@ public class Sample_PathFinding3D_Rect : MonoBehaviour {
         foreach (var rect in rectCells) {
             Color color = Color.blue;
             if (rect.isClose) {
+                color = Color.black;
+            }
+            if (rect.isBlock) {
                 color = Color.red;
             }
             var all = GetCenterRound(rect.worldPos, sideLength);
