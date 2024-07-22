@@ -4,11 +4,13 @@ using System;
 
 public static class GFpathFinding3D_Rect {
 
-    public static HashSet<RectCell3D> openSet = new HashSet<RectCell3D>();
+    public static SortedSet<RectCell3D> openSet = new SortedSet<RectCell3D>();
     public static Dictionary<Vector2Int, RectCell3D> openDic = new Dictionary<Vector2Int, RectCell3D>();
 
     public static SortedSet<RectCell3D> closeSet = new SortedSet<RectCell3D>();
     public static Dictionary<Vector2Int, RectCell3D> closeDic = new Dictionary<Vector2Int, RectCell3D>();
+
+    public static Dictionary<Vector2Int, RectCell3D> parentDic = new Dictionary<Vector2Int, RectCell3D>();
 
     static int GRIDWIDTH;
     static int GRIDHEIGHT;
@@ -41,13 +43,11 @@ public static class GFpathFinding3D_Rect {
         int endIndex = GetIndex(endPos);
         if (startIndex == -1 || endIndex == -1) {
             path = null;
-            Debug.Log("1");
             return false;
         }
 
         if (!isWalkable(startPos) || !isWalkable(endPos)) {
             path = null;
-            Debug.Log("2");
             return false;
         }
 
@@ -55,27 +55,20 @@ public static class GFpathFinding3D_Rect {
         openDic.Clear();
         closeSet.Clear();
         closeDic.Clear();
+        parentDic.Clear();
         path = new List<Vector3>();
 
         RectCell3D rectStar = GetRectCell3D(startIndex);
         RectCell3D rectEnd = GetRectCell3D(endIndex);
+
         openSet.Add(rectStar);
         openDic.Add(startPos, rectStar);
 
         while (openSet.Count > 0) {
-            var cur = OpenSet_FindMin();
+            var cur = openSet.Min;
             openSet.Remove(cur);
             openDic.Remove(cur.pos);
-            if (openSet.Contains(cur)) {
-                Debug.Log("!!!!!");
-            }
             closeSet.Add(cur);
-            int s = 0;
-            Debug.Log("cur " + cur.pos);
-            foreach (var pos in openSet) {
-                Debug.Log(s + " " + pos.pos);
-                s++;
-            }
             cur.isClose = true;
             closeDic.Add(cur.pos, cur);
 
@@ -106,13 +99,13 @@ public static class GFpathFinding3D_Rect {
                 if (neighbor.pos == endPos) {
                     path.Add(neighbor.worldPos);
                     path.Add(cur.worldPos);
-                    while (cur.parent != null) {
-                        path.Add(cur.parent.worldPos);
-                        cur = cur.parent;
+                    while (parentDic.TryGetValue(cur.pos, out var parent)) {
+                        path.Add(parent.worldPos);
+                        cur = parent;
                     }
-                    Debug.Log("3");
                     return true;
                 }
+
                 float gCost = G_COST_BASE;
                 if (i % 2 == 0) {
                     gCost *= 1.4f;
@@ -120,20 +113,27 @@ public static class GFpathFinding3D_Rect {
                 float hCost = H_Manhatan(neighbor.pos, endPos);
                 float fCost = gCost + hCost;
 
-                if (openDic.ContainsKey(neighbor.pos)) {
+                if (openDic.TryGetValue(neighbor.pos, out var neighborCell)) {
                     if (fCost < neighbor.fCost) {
-                        neighbor.Init(fCost, gCost, hCost, cur);
+                        openSet.Remove(neighborCell);
+                        openDic.Remove(neighborCell.pos);
+                        parentDic.Remove(neighborCell.pos);
+
+                        neighborCell.Init(fCost, gCost, hCost);
+                        openSet.Add(neighborCell);
+                        openDic.Add(neighborCell.pos, neighborCell);
+                        parentDic.Add(neighborCell.pos, cur);
                     }
                 } else {
-                    neighbor.Init(fCost, gCost, hCost, cur);
+                    neighbor.Init(fCost, gCost, hCost);
                     openSet.Add(neighbor);
                     openDic.Add(neighbor.pos, neighbor);
+                    parentDic.Add(neighbor.pos, cur);
                 }
 
             }
 
         }
-        Debug.Log("4");
         return false;
     }
 

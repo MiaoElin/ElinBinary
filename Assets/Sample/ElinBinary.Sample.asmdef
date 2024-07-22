@@ -1,0 +1,16 @@
+{
+    "name": "ElinBinary.Sample",
+    "rootNamespace": "",
+    "references": [
+        "GUID:118909b18488eba4abc3551ebf5aa36d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

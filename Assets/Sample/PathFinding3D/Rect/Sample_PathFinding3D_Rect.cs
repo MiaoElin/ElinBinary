@@ -40,17 +40,20 @@ public class Sample_PathFinding3D_Rect : MonoBehaviour {
 
     void Update() {
         LayerMask Ground = 1 << 3;
-        if (Input.GetMouseButtonDown(0)) {
+        // 鼠标左键选择格子
+        if (Input.GetMouseButton(0)) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             bool has = Physics.Raycast(ray, out RaycastHit hit, 100, Ground);
             if (has) {
                 var gridPos = GFpathFinding3D_Rect.WorldToGridPos(hit.point);
                 var index = GFpathFinding3D_Rect.GetIndex(gridPos);
-                RectCell3D cell = rectCells[index];
+                ref RectCell3D cell = ref rectCells[index];
                 if (cell.isBlock) {
-                    cell.isBlock = false;
-                    blockSet.Remove(cell.pos);
-                } else {
+                    if (Input.GetKey(KeyCode.C)) {
+                        cell.isBlock = false;
+                        blockSet.Remove(cell.pos);
+                    }
+                } else if (!Input.GetKey(KeyCode.C)) {
                     cell.isBlock = true;
                     blockSet.Add(cell.pos);
                 }

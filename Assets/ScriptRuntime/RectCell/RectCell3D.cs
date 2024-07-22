@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class RectCell3D : IEquatable<RectCell3D>, IComparable<RectCell3D> {
+public struct RectCell3D : IEquatable<RectCell3D>, IComparable<RectCell3D> {
     public Vector2Int pos;
     public Vector3 worldPos;
     public float fCost;
     public float gCost;
     public float hCost;
 
-    public RectCell3D parent;
+    // public RectCell3D parent;
 
     public bool isBlock;
     public bool impassable;
@@ -22,11 +22,10 @@ public class RectCell3D : IEquatable<RectCell3D>, IComparable<RectCell3D> {
         this.worldPos.z = y * sideLength + sideLength / 2;
     }
 
-    public void Init(float f, float g, float h, RectCell3D parent) {
+    public void Init(float f, float g, float h) {
         this.fCost = f;
         this.gCost = g;
         this.hCost = h;
-        this.parent = parent;
     }
 
     public Vector2Int[] GetArround() {

@@ -1,0 +1,20 @@
+{
+    "name": "ElinBinary.Tests",
+    "rootNamespace": "",
+    "references": [
+        "GUID:118909b18488eba4abc3551ebf5aa36d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
