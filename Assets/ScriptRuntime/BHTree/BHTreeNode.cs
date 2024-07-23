@@ -44,6 +44,16 @@ public class BHTreeNode {
         }
     }
 
+    public void Reset() {
+        status = BHTreeNodeStatus.NotEnter;
+        if (type != BHTreeNodeType.Action) {
+            foreach (var child in childrens) {
+                child.Reset();
+            }
+        }
+        activeChild = null;
+    }
+
     public BHTreeNodeStatus Execute(float dt) {
         if (type == BHTreeNodeType.SelectorSequence) {
             // 单次执行一个 按顺序找到第一个是可进入Running的节点（notEnter条件为true，或者是Running状态）
