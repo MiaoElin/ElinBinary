@@ -95,32 +95,64 @@ namespace ElinBinary {
             // - ActRunningHandle
             attackAction2.ActRunningHandle = (dt) => {
                 if (monster.cd2 <= 0) {
+                    monster.cd2 = monster.cdMax2;
+
                     Debug.Log("Skill2");
                     owner.hp -= 10;
                     if (owner.hp <= 0) {
                         owner.hp = 0;
                     }
-                    monster.cd2 = monster.cdMax2;
                 }
                 return BHTreeNodeStatus.Done;
             };
 
             // - BHTreeNode Root
-            BHTreeNode root = new BHTreeNode();
-            root.InitContainer(BHTreeNodeType.Sequence);
-            root.childrens.Add(searchAction);
-            root.childrens.Add(attackAction1);
-            root.childrens.Add(attackAction2);
+            BHTreeNode monsterRoot = new BHTreeNode();
+            monsterRoot.InitContainer(BHTreeNodeType.Sequence);
+            monsterRoot.childrens.Add(searchAction);
+            monsterRoot.childrens.Add(attackAction1);
+            monsterRoot.childrens.Add(attackAction2);
 
             // - BHTree Tree
-            BHTree tree = new BHTree();
-            tree.InitRoot(root);
-            monster.aiCom.tree = tree;
+            BHTree monsterTree = new BHTree();
+            monsterTree.InitRoot(monsterRoot);
+            monster.aiCom.tree = monsterTree;
             #endregion
 
             #region Curer
+            BHTreeNode cureAction = new BHTreeNode();
+            cureAction.InitAction();
+            cureAction.PreconditionHandle = () => {
+                if (Vector2.SqrMagnitude(owner.Pos() - curer.Pos()) <= 3 * 3) {
+                    Debug.Log("Curer Enter Working");
+                    return true;
+                } else {
+                    return false;
+                }
+            };
 
-            
+            cureAction.ActRunningHandle = (dt) => {
+                if (curer.cd1 <= 0) {
+                    curer.cd1 = curer.cdMax1;
+
+                    owner.hp += 5;
+                    if (owner.hp >= owner.hpMax) {
+                        owner.hp = owner.hpMax;
+                        Debug.Log("Owner is full of flood");
+                    } else {
+                        Debug.Log("Curer is Working");
+                    }
+                }
+                return BHTreeNodeStatus.Done;
+            };
+
+            BHTreeNode cureRoot = new BHTreeNode();
+            cureRoot.InitContainer(BHTreeNodeType.Sequence);
+            cureRoot.childrens.Add(cureAction);
+
+            BHTree cureTree = new BHTree();
+            cureTree.InitRoot(cureRoot);
+            curer.aiCom.tree = cureTree;
 
             #endregion
 
@@ -128,7 +160,10 @@ namespace ElinBinary {
 
         void Update() {
             float dt = Time.deltaTime;
+            // Owner
             owner.Move(MoveAxisTick(), dt);
+
+            // Monster
             monster.cd1 -= dt;
             if (monster.cd1 <= 0) {
                 monster.cd1 = 0;
@@ -138,6 +173,13 @@ namespace ElinBinary {
                 monster.cd2 = 0;
             }
             monster.aiCom.tree.Execute(dt);
+
+            // Curer
+            curer.cd1 -= dt;
+            if (curer.cd1 <= 0) {
+                curer.cd1 = 0;
+            }
+            curer.aiCom.tree.Execute(dt);
 
         }
 
