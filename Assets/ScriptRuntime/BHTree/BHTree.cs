@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class BHTree {
     public BHTreeNode root;
     public bool isPause;

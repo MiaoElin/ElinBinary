@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-
 public class BHTreeNode {
     public BHTreeNodeStatus status;
     public BHTreeNodeType type;
@@ -12,6 +11,7 @@ public class BHTreeNode {
     public Func<bool> PreconditionHandle;
 
     public Func<float, BHTreeNodeStatus> ActNotEnterHandle;
+    public Func<float, BHTreeNodeStatus> ActEnterHandle;
     public Func<float, BHTreeNodeStatus> ActRunningHandle;
 
     public void InitAction() {
@@ -250,10 +250,13 @@ public class BHTreeNode {
         if (status == BHTreeNodeStatus.NotEnter) {
             if (PreconditionHandle == null || PreconditionHandle.Invoke()) {
                 status = BHTreeNodeStatus.Running;
+                if (ActEnterHandle != null) {
+                    status = ActEnterHandle.Invoke(dt);
+                }
             } else {
                 status = BHTreeNodeStatus.Done;
                 if (ActNotEnterHandle != null) {
-                    ActNotEnterHandle.Invoke(dt);
+                    status = ActNotEnterHandle.Invoke(dt);
                 }
             }
         } else if (status == BHTreeNodeStatus.Running) {
