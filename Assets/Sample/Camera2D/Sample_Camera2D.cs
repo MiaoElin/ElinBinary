@@ -24,5 +24,9 @@ public class Sample_Camera2D : MonoBehaviour {
 
         cam.Follow(role.transform.position);
 
+        if (Input.GetKey(KeyCode.P)) {
+            cam.main.transform.position += new Vector3(0, cam.Shake(), 0);
+        }
+
     }
 }

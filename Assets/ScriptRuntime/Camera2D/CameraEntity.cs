@@ -26,7 +26,23 @@ public class CameraEntity {
         if (t < duration) {
             t += Time.deltaTime;
             main.transform.position = GFEasing.Ease3D(GFEasingEnum.Linear, t, duration, startPos, endPos);
+        } else {
+      
         }
+
+    }
+
+    public float Shake() {
+        // Phase 相位
+        float phase = 1;
+        // Frequency 振频
+        float frequency = 10f;
+        // Amplitude 振幅
+        float amplitude = 0.01f;
+
+        float sine = Mathf.Sin(Time.time * frequency) * amplitude;
+        Debug.Log(sine);
+        return sine;
     }
 
 }
